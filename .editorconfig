@@ -1,0 +1,60 @@
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.json]
+insert_final_newline = false
+
+[*.cs]
+indent_size = 4
+
+[*.cshtml]
+indent_size = 4
+
+# Spelling
+spelling_languages = en-us
+spelling_checkable_types = strings,identifiers,comments
+spelling_use_default_exclusion_dictionary = false
+spelling_exclusion_path = .\.spelling-exclusion.dic
+spelling_error_severity = warning
+
+# C#
+[*.cs]
+
+
+#### .NET Coding Conventions ####
+
+# Organize usings
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = false
+file_header_template = unset
+
+# Code-block preferences
+csharp_style_namespace_declarations = file_scoped
+
+# this. and Me. preferences
+dotnet_style_qualification_for_event = false
+dotnet_style_qualification_for_field = false
+dotnet_style_qualification_for_method = false
+dotnet_style_qualification_for_property = false
+
+# Resharper
+resharper_convert_to_primary_constructor_suggestion = none
+resharper_comment_typo_highlighting = none
+resharper_identifier_typo_highlighting = none
+resharper_string_literal_typo_highlighting = none
+
+# New line preferences
+csharp_new_line_before_catch = true
+csharp_new_line_before_else = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_open_brace = all
+csharp_new_line_between_query_expression_clauses = true

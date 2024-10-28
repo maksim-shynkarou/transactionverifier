@@ -1,0 +1,6 @@
+@TestTask.TransactionVerifier_HostAddress = http://localhost:5070
+
+GET {{TestTask.TransactionVerifier_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

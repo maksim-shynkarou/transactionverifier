@@ -1,0 +1,42 @@
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using TestTask.TransactionVerifier.Common.Extensions;
+using TestTask.TransactionVerifier.WebApi.Controllers.Base;
+using TestTask.TransactionVerifier.WebApi.Requests;
+using TestTask.TransactionVerifier.WebApi.Services.Interfaces;
+
+namespace TestTask.TransactionVerifier.WebApi.Controllers.V1;
+
+public class TransactionController(ICsvProcessingService csvProcessingService, ICsvFileService csvFileService)
+    : ApiControllerVersionedBase
+{
+    [HttpGet("get-all-files")]
+    public async Task<IActionResult> GetAllFiles(CancellationToken cancellationToken)
+    {
+        return Ok(await csvFileService.GetAllFilesAsync(cancellationToken));
+    }
+
+    [HttpPost("process-transactions")]
+    public async Task<IActionResult> UploadCsv(IFormFile file, CancellationToken cancellationToken)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        var isFileProcessed = await csvFileService.IsCsvFileProcessed(file, cancellationToken);
+
+        if (isFileProcessed)
+            return Ok($"File already processed. Hash: {await file.GetFileMd5HashAsync()}");
+
+        await csvFileService.AddFileAsync(file, cancellationToken);
+
+        await csvProcessingService.ProcessTransactions(file, cancellationToken);
+
+        stopwatch.Stop();
+        return Ok(stopwatch.Elapsed);
+    }
+
+    [HttpGet("get-comparision-results")]
+    public async Task<IActionResult> GetResult([FromQuery] GetComparisionResultsRequest request, CancellationToken cancellationToken)
+    {
+        return Ok(await csvProcessingService.GetComparisionResultAsync(request, cancellationToken));
+    }
+}
