@@ -1,12 +1,13 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using TestTask.TransactionVerifier.BusinessLogic.Services.Abstractions;
 using TestTask.TransactionVerifier.Common.Models;
 using TestTask.TransactionVerifier.DataAccess.Contexts.Abstractions;
 using TestTask.TransactionVerifier.DataAccess.Entities;
-using TestTask.TransactionVerifier.WebApi.Services.Interfaces;
 
-namespace TestTask.TransactionVerifier.WebApi.Services.Implementations;
+namespace TestTask.TransactionVerifier.BusinessLogic.Services;
 
-public class CsvFileService(ITransactionVerifierDbContext context) : ICsvFileService
+internal class CsvFileService(ITransactionVerifierDbContext context) : ICsvFileService
 {
     public async Task<bool> IsCsvFileProcessed(string fileHash, CancellationToken cancellationToken)
     {

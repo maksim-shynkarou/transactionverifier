@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Http;
+using TestTask.TransactionVerifier.BusinessLogic.Requests;
 using TestTask.TransactionVerifier.Common.Models;
-using TestTask.TransactionVerifier.WebApi.Requests;
-using TestTask.TransactionVerifier.WebApi.Responses;
+using TestTask.TransactionVerifier.Common.Responses;
 
-namespace TestTask.TransactionVerifier.WebApi.Services.Interfaces;
+namespace TestTask.TransactionVerifier.BusinessLogic.Services.Abstractions;
 
 public interface ICsvProcessingService
 {

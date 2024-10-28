@@ -1,4 +1,4 @@
-namespace TestTask.TransactionVerifier.WebApi.Responses;
+namespace TestTask.TransactionVerifier.Common.Responses;
 
 public class PaginatedResponse<T>
 {

@@ -1,7 +1,7 @@
 using TestTask.TransactionVerifier.Common.Enums;
-using TestTask.TransactionVerifier.WebApi.Requests.Base;
+using TestTask.TransactionVerifier.Common.Requests.Base;
 
-namespace TestTask.TransactionVerifier.WebApi.Requests;
+namespace TestTask.TransactionVerifier.BusinessLogic.Requests;
 
 public class GetComparisionResultsRequest : BasePaginatedRequest
 {

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using TestTask.TransactionVerifier.Common.Enums;
 
 namespace TestTask.TransactionVerifier.DataAccess.Entities;
 

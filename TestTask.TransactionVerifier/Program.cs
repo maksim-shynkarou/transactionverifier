@@ -1,7 +1,8 @@
 using Microsoft.OpenApi.Models;
+using TestTask.TransactionVerifier.BusinessLogic.Services;
+using TestTask.TransactionVerifier.BusinessLogic.Services.Abstractions;
+using TestTask.TransactionVerifier.BusinessLogic.Setup;
 using TestTask.TransactionVerifier.DataAccess.Setup;
-using TestTask.TransactionVerifier.WebApi.Services.Implementations;
-using TestTask.TransactionVerifier.WebApi.Services.Interfaces;
 using TestTask.TransactionVerifier.WebApi.Setup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,15 +19,12 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDefaultApiVersioning();
 builder.Services.AddCustomCors();
+builder.Services.RegisterCoreDependencies();
 
 builder.Services.RegisterDbContext(o =>
 {
     o.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
 });
-
-builder.Services.AddScoped<ICsvProcessingService, CsvTransactionService>();
-builder.Services.AddScoped<ICsvFileService, CsvFileService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-namespace TestTask.TransactionVerifier.WebApi.Requests.Base;
+namespace TestTask.TransactionVerifier.Common.Requests.Base;
 
 public class BasePaginatedRequest
 {

@@ -1,13 +1,10 @@
-using System.Xml.Linq;
+namespace TestTask.TransactionVerifier.Common.Models;
 
-namespace TestTask.TransactionVerifier.Common.Models
+public sealed record CsvTransactionModel
 {
-    public class CsvTransactionModel
-    {
-        public decimal Amount { get; set; }
+    public decimal Amount { get; init; }
 
-        public DateTime ProcessedAt { get; set; }
+    public DateTime ProcessedAt { get; init; }
 
-        public string Description { get; set; }
-    }
+    public string Description { get; init; }
 }

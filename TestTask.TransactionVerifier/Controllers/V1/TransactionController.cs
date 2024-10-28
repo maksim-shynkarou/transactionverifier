@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TestTask.TransactionVerifier.BusinessLogic.Requests;
+using TestTask.TransactionVerifier.BusinessLogic.Services.Abstractions;
 using TestTask.TransactionVerifier.Common.Extensions;
 using TestTask.TransactionVerifier.WebApi.Controllers.Base;
-using TestTask.TransactionVerifier.WebApi.Requests;
-using TestTask.TransactionVerifier.WebApi.Services.Interfaces;
 
 namespace TestTask.TransactionVerifier.WebApi.Controllers.V1;
 

@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using TestTask.TransactionVerifier.Common.Models;
 using TestTask.TransactionVerifier.DataAccess.Entities;
 
-namespace TestTask.TransactionVerifier.WebApi.Services.Interfaces;
+namespace TestTask.TransactionVerifier.BusinessLogic.Services.Abstractions;
 
 public interface ICsvFileService
 {

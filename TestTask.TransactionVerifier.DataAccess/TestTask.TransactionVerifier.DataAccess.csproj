@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestTask.TransactionVerifier.Common\TestTask.TransactionVerifier.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Migrations\" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 using TestTask.TransactionVerifier.Common.Models;
 
-namespace TestTask.TransactionVerifier.WebApi.Requests;
+namespace TestTask.TransactionVerifier.BusinessLogic.Requests;
 
 public class ProcessCsvTransactionsRequest
 {

@@ -1,20 +1,18 @@
 using CsvHelper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using TestTask.TransactionVerifier.BusinessLogic.Requests;
+using TestTask.TransactionVerifier.BusinessLogic.Services.Abstractions;
 using TestTask.TransactionVerifier.Common.Enums;
-using TestTask.TransactionVerifier.Common.Extensions;
 using TestTask.TransactionVerifier.Common.Models;
+using TestTask.TransactionVerifier.Common.Responses;
 using TestTask.TransactionVerifier.DataAccess.Contexts.Abstractions;
-using TestTask.TransactionVerifier.DataAccess.Entities;
-using TestTask.TransactionVerifier.WebApi.Requests;
-using TestTask.TransactionVerifier.WebApi.Responses;
-using TestTask.TransactionVerifier.WebApi.Services.Interfaces;
 
-namespace TestTask.TransactionVerifier.WebApi.Services.Implementations;
+namespace TestTask.TransactionVerifier.BusinessLogic.Services;
 
-public class CsvTransactionService(ITransactionVerifierDbContext context, ITransactionService transactionService) : ICsvProcessingService
+internal class CsvTransactionService(ITransactionVerifierDbContext context, ITransactionService transactionService) : ICsvProcessingService
 {
-
     public async Task ProcessTransactions(IFormFile? csvFile, string fileHash, CancellationToken cancellationToken)
     {
         if ((csvFile?.Length ?? 0) == 0)
@@ -30,23 +28,22 @@ public class CsvTransactionService(ITransactionVerifierDbContext context, ITrans
             FileHash = fileHash
         };
 
-        var csvUniqeTransactions = await transactionService.ProcessData(request, cancellationToken);
-
-        foreach (var csvTransaction in csvUniqeTransactions)
+        await transactionService.ProcessData(request, cancellationToken);
+    }
+    
+    public async Task<PaginatedResponse<TransactionModel>> GetComparisionResultAsync(GetComparisionResultsRequest request, CancellationToken cancellationToken)
+    {
+        switch (request.ComparisionType)
         {
-            var dbCsvTransaction = new CsvTransaction()
-            {
-                Amount = csvTransaction.Amount,
-                ProcessedAt = csvTransaction.ProcessedAt,
-                CsvFileHash = fileHash,
-                Description = csvTransaction.Description
-            };
-
-            await context.CsvTransactions.AddAsync(dbCsvTransaction, cancellationToken);
-            
+            case TransactionComparisionType.Intersect:
+                return await GetIntersectedTransactionsAsync(request, cancellationToken);
+            case TransactionComparisionType.DbUnique:
+                return await GetDatabaseUniqueTransactionsAsync(request, cancellationToken);
+            case TransactionComparisionType.CsvUnique:
+                return await GetCsvUniqueTransactionsAsync(request, cancellationToken);
+            default:
+                return new PaginatedResponse<TransactionModel>([], request.PageNumber, request.PageSize, 0);
         }
-
-        await context.SaveChangesAsync(cancellationToken);
     }
 
     private async Task<List<CsvTransactionModel>> GetCsvTransactionModelsFromCsvFile(IFormFile? csvFile)
@@ -61,21 +58,6 @@ public class CsvTransactionService(ITransactionVerifierDbContext context, ITrans
         }
 
         return csvTransactions;
-    }
-
-    public async Task<PaginatedResponse<TransactionModel>> GetComparisionResultAsync(GetComparisionResultsRequest request, CancellationToken cancellationToken)
-    {
-        switch (request.ComparisionType)
-        {
-            case TransactionComparisionType.Intersect:
-                return await GetIntersectedTransactionsAsync(request, cancellationToken);
-            case TransactionComparisionType.DbUnique:
-                return await GetDatabaseUniqueTransactionsAsync(request, cancellationToken);
-            case TransactionComparisionType.CsvUnique:
-                return await GetCsvUniqueTransactionsAsync(request, cancellationToken);
-            default:
-                return new PaginatedResponse<TransactionModel>([], request.PageNumber, request.PageSize, 0);
-        }
     }
 
     private async Task<PaginatedResponse<TransactionModel>> GetIntersectedTransactionsAsync(GetComparisionResultsRequest request, CancellationToken cancellationToken)
@@ -137,7 +119,7 @@ public class CsvTransactionService(ITransactionVerifierDbContext context, ITrans
             .Include(x => x.CsvTransactions)
             .Where(x => !x.CsvTransactions.Any(ct => ct.CsvFileHash == request.FileHash))
             .Skip(request.PageNumber * request.PageSize)
-            .Take(request.PageSize) 
+            .Take(request.PageSize)
             .Select(x => new TransactionModel
             {
                 Amount = x.Amount,
