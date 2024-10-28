@@ -2,7 +2,7 @@ using TestTask.TransactionVerifier.Common.Models;
 
 namespace TestTask.TransactionVerifier.WebApi.Requests;
 
-public class ProcessDataRequest
+public class ProcessCsvTransactionsRequest
 {
     public List<CsvTransactionModel> CsvTransactions { get; set; }
 

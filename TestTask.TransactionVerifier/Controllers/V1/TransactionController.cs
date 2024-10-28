@@ -20,15 +20,16 @@ public class TransactionController(ICsvProcessingService csvProcessingService, I
     public async Task<IActionResult> UploadCsv(IFormFile file, CancellationToken cancellationToken)
     {
         var stopwatch = Stopwatch.StartNew();
+        var fileHash = await file.GetFileMd5HashAsync();
 
-        var isFileProcessed = await csvFileService.IsCsvFileProcessed(file, cancellationToken);
+        var isFileProcessed = await csvFileService.IsCsvFileProcessed(fileHash, cancellationToken);
 
         if (isFileProcessed)
             return Ok($"File already processed. Hash: {await file.GetFileMd5HashAsync()}");
 
-        await csvFileService.AddFileAsync(file, cancellationToken);
+        await csvFileService.AddFileAsync(file, fileHash, cancellationToken);
 
-        await csvProcessingService.ProcessTransactions(file, cancellationToken);
+        await csvProcessingService.ProcessTransactions(file, fileHash, cancellationToken);
 
         stopwatch.Stop();
         return Ok(stopwatch.Elapsed);

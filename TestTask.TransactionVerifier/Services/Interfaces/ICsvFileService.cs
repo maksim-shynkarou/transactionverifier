@@ -7,7 +7,7 @@ public interface ICsvFileService
 {
     Task<List<CsvFileModel>> GetAllFilesAsync(CancellationToken cancellationToken);
 
-    Task<bool> IsCsvFileProcessed(IFormFile file, CancellationToken cancellationToken);
+    Task<bool> IsCsvFileProcessed(string fileHash, CancellationToken cancellationToken);
 
-    Task<CsvFile> AddFileAsync(IFormFile file, CancellationToken cancellationToken);
+    Task<CsvFile> AddFileAsync(IFormFile file, string fileHash, CancellationToken cancellationToken);
 }

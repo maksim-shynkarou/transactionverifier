@@ -6,5 +6,5 @@ namespace TestTask.TransactionVerifier.WebApi.Services.Interfaces;
 
 public interface ITransactionService
 {
-    Task<List<CsvTransactionModel>> ProcessData(ProcessDataRequest request, CancellationToken cancellationToken);
+    Task<List<CsvTransactionModel>> ProcessData(ProcessCsvTransactionsRequest request, CancellationToken cancellationToken);
 }

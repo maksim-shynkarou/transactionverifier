@@ -25,7 +25,7 @@ public class TransactionService : ITransactionService
         _transactionVerifierDbContext = transactionVerifierDbContext;
     }
 
-    public async Task<List<CsvTransactionModel>> ProcessData(ProcessDataRequest request, CancellationToken cancellationToken)
+    public async Task<List<CsvTransactionModel>> ProcessData(ProcessCsvTransactionsRequest request, CancellationToken cancellationToken)
     {
         var (updatedCsvTransactions, success) = await ProcessTransactionsInBatchesAsync(request.CsvTransactions, request.FileHash, cancellationToken);
 
@@ -34,7 +34,7 @@ public class TransactionService : ITransactionService
             return updatedCsvTransactions;
         }
 
-        throw new Exception("Need to debug. Possible edgecase.");
+        throw new Exception("Need to debug. Possible edge case.");
     }
 
 

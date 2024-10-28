@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using TestTask.TransactionVerifier.Common.Extensions;
 using TestTask.TransactionVerifier.Common.Models;
 using TestTask.TransactionVerifier.DataAccess.Contexts.Abstractions;
 using TestTask.TransactionVerifier.DataAccess.Entities;
@@ -9,19 +8,15 @@ namespace TestTask.TransactionVerifier.WebApi.Services.Implementations;
 
 public class CsvFileService(ITransactionVerifierDbContext context) : ICsvFileService
 {
-    public async Task<bool> IsCsvFileProcessed(IFormFile file, CancellationToken cancellationToken)
+    public async Task<bool> IsCsvFileProcessed(string fileHash, CancellationToken cancellationToken)
     {
-        var fileHash = await file.GetFileMd5HashAsync();
-
         return await context.CsvFiles
             .AsNoTracking()
             .AnyAsync(x => x.Hash == fileHash, cancellationToken: cancellationToken);
     }
 
-    public async Task<CsvFile> AddFileAsync(IFormFile file, CancellationToken cancellationToken)
+    public async Task<CsvFile> AddFileAsync(IFormFile file, string fileHash, CancellationToken cancellationToken)
     {
-        var fileHash = await file.GetFileMd5HashAsync();
-
         var dbFile = new CsvFile
         {
             FileName = file.FileName,

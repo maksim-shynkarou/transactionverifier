@@ -6,7 +6,7 @@ namespace TestTask.TransactionVerifier.WebApi.Services.Interfaces;
 
 public interface ICsvProcessingService
 {
-    Task ProcessTransactions(IFormFile? csvFile, CancellationToken cancellationToken);
+    Task ProcessTransactions(IFormFile? csvFile, string fileHash, CancellationToken cancellationToken);
 
     Task<PaginatedResponse<TransactionModel>> GetComparisionResultAsync(GetComparisionResultsRequest request,
         CancellationToken cancellationToken);

@@ -15,18 +15,16 @@ namespace TestTask.TransactionVerifier.WebApi.Services.Implementations;
 public class CsvTransactionService(ITransactionVerifierDbContext context, ITransactionService transactionService) : ICsvProcessingService
 {
 
-    public async Task ProcessTransactions(IFormFile? csvFile, CancellationToken cancellationToken)
+    public async Task ProcessTransactions(IFormFile? csvFile, string fileHash, CancellationToken cancellationToken)
     {
         if ((csvFile?.Length ?? 0) == 0)
         {
             throw new Exception("File is empty or not provided.");
         }
 
-        var fileHash = await csvFile!.GetFileMd5HashAsync();
-
         var csvTransactions = await GetCsvTransactionModelsFromCsvFile(csvFile);
 
-        var request = new ProcessDataRequest
+        var request = new ProcessCsvTransactionsRequest
         {
             CsvTransactions = csvTransactions,
             FileHash = fileHash
